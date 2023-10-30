@@ -9,11 +9,19 @@
 #SBATCH --workdir=/user/cristian.carrasco/T1-hpc        # direccion del directorio de trabajo
 #
 #SBATCH --nodes 1                    # numero de nodos a usar
-#SBATCH --ntasks-per-node=24         # numero de trabajos (procesos) por nodo
-#SBATCH --cpus-per-task=1            # numero de cpus (threads) por trabajo (proceso)
+#SBATCH --ntasks-per-node=4        # numero de trabajos (procesos) por nodo
+#SBATCH --cpus-per-task=4            # numero de cpus (threads) por trabajo (proceso)
 
 ./hello
+
+#SBATCH --nodes 2                    # numero de nodos a usar
+#SBATCH --ntasks-per-node=4        # numero de trabajos (procesos) por nodo
+#SBATCH --cpus-per-task=4            # numero de cpus (threads) por trabajo (proceso)
 ./hello
+
+#SBATCH --nodes 4                    # numero de nodos a usar
+#SBATCH --ntasks-per-node=4        # numero de trabajos (procesos) por nodo
+#SBATCH --cpus-per-task=4            # numero de cpus (threads) por trabajo (proceso)
 ./hello
 
 sleep 10
