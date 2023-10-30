@@ -12,17 +12,17 @@
 #SBATCH --ntasks-per-node=4        # numero de trabajos (procesos) por nodo
 #SBATCH --cpus-per-task=4            # numero de cpus (threads) por trabajo (proceso)
 
-./hello
+./extinguishing_omp_1 -f test_files/test2
 
 #SBATCH --nodes 2                    # numero de nodos a usar
 #SBATCH --ntasks-per-node=4        # numero de trabajos (procesos) por nodo
 #SBATCH --cpus-per-task=4            # numero de cpus (threads) por trabajo (proceso)
-./hello
+./extinguishing_omp_1 -f test_files/test2
 
 #SBATCH --nodes 4                    # numero de nodos a usar
 #SBATCH --ntasks-per-node=4        # numero de trabajos (procesos) por nodo
 #SBATCH --cpus-per-task=4            # numero de cpus (threads) por trabajo (proceso)
-./hello
+./extinguishing_omp_1 -f test_files/test2
 
 sleep 10
 echo "Finished with job $SLURM_JOBID"
