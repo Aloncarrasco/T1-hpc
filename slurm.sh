@@ -6,7 +6,7 @@
 #SBATCH -e c_job.err                 # STDERR
 #SBATCH --mail-type=END,FAIL         # notificacion cuando el trabajo termine o falle
 #SBATCH --mail-user=cristian.carrasco@uc.cl       # mail donde mandar las notificaciones
-#SBATCH --workdir=/user/cruz/iic3534/slurm         # direccion del directorio de trabajo
+#SBATCH --workdir=/user/cristian.carrasco/T1-hpc        # direccion del directorio de trabajo
 #
 #SBATCH --nodes 1                    # numero de nodos a usar
 #SBATCH --ntasks-per-node=24         # numero de trabajos (procesos) por nodo
