@@ -334,7 +334,7 @@ int main(int argc, char *argv[]) {
 		float global_residual = 0.0f;
 		int step;
 
-		// #pragma omp parallel for private(i,j,step) reduction(max:global_residual) schedule(static)
+		#pragma omp parallel for private(i,j,step) reduction(max:global_residual) schedule(static)
 		for( step=0; step<10; step++ )	{
 			/* 4.2.1. Update heat on active focal points */
 			for( i=0; i<num_focal; i++ ) {
