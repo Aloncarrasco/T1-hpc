@@ -25,7 +25,7 @@ echo 'Starting process'
 for i in {1..16}; do
   echo '\n'
   echo 'Starting with '$i' cpus'
-  export export OMP_NUM_THREADS=$i
+  export OMP_NUM_THREADS=$i
   #SBATCH --nodes 1                    # numero de nodos a usar
   #SBATCH --cpus-per-task=16           # numero de cpus (threads) por trabajo (proceso)
 
