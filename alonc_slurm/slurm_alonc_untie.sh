@@ -5,8 +5,8 @@
 #SBATCH -o c_job.out                 # STDOUT (A = )
 #SBATCH -e c_job.err                 # STDERR
 #SBATCH --mail-type=END,FAIL         # notificacion cuando el trabajo termine o fa$
-#SBATCH --mail-user=christian.klempau@uc.cl       # mail donde mandar las notifica$
-#SBATCH --workdir=/home/christian.klempau/T1-hpc         # direccion del d$
+#SBATCH --mail-user=cristian.carrasco@uc.cl       # mail donde mandar las notifica$
+#SBATCH --workdir=/home/cristian.carrasco/T1-hpc         # direccion del d$
 #
 
 function ends_with_c {
