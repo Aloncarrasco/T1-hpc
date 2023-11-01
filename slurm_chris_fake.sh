@@ -19,34 +19,17 @@ function ends_with_c {
 }
 
 for file in versions_fake/*; do
+  echo 'Starting test slurm job'
   if ends_with_c $file; then
-    echo 'Starting with 16 cpus - no export OMP_NUM_THREADS'
     file_bin=$file.bin
     gcc -fopenmp -lm -O3 $file -lm -O3 -o $file_bin
   
     #SBATCH --nodes 1                    # numero de nodos a usar
     #SBATCH --cpus-per-task=16           # numero de cpus (threads) por trabajo (proceso)
-    $file_bin -f test_files/test1
+    echo FILE: $file
+    time $file_bin -f test_files/test2
   fi
 done
 
-#for file in versions/*; do
-#  echo 'Starting with 16 cpus - export OMP_NUM_THREADS=16'
-#  #SBATCH --nodes 1                    # numero de nodos a usar
-#  #SBATCH --cpus-per-task=16           # numero de cpus (threads) por trabajo (proceso)
-#  export OMP_NUM_THREADS=16
-#  $file -f test_files/test2
-#done
-#
-#for file in versions/*; do
-#  echo 'Starting with 32 cpus - export OMP_NUM_THREADS=32'
-#  #SBATCH --nodes 1                    # numero de nodos a usar
-#  #SBATCH --cpus-per-task=32           # numero de cpus (threads) por trabajo (proceso)
-#  export OMP_NUM_THREADS=32
-#  $file -f test_files/test2
-#done
-
-
-
-sleep 10
+sleep 1
 echo "Finished with job $SLURM_JOBID"
