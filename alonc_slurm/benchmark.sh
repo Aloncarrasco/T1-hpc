@@ -14,7 +14,7 @@
 echo 'Start'
 
 gcc -fopenmp -lm -O3 'versions_2/parallel_all.c' -lm -O3 -o 'parallel_all.bin'
-gcc -lm -O3 'extinguishing.c' -o 'extinguishing.bin'
+gcc -lm -O3 'extinguishing.c' -lm -O3 -o 'extinguishing.bin'
 
 echo 'Finished compiling'
 
