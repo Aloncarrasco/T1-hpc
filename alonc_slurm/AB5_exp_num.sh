@@ -20,19 +20,21 @@ echo ''
 
 file='versions_2/parallel_all_but_5.c'
 file_bin=$file.bin
-echo 'test 3'
 
 
 gcc -fopenmp -lm -O3 $file -lm -O3 -o $file_bin
 
 echo 'no exports'
+
 srun $file_bin -f test_files/test4
 
-for i in {1..16}; do
-  export OMP_NUM_THREADS=$i
-  echo 'export OMP_NUM_THREADS='$i
-  srun $file_bin -f test_files/test4
-done
+srun $file_bin -f test_files/test4
+
+# for i in {1..16}; do
+#   export OMP_NUM_THREADS=$i
+#   echo 'export OMP_NUM_THREADS='$i
+#   srun $file_bin -f test_files/test4
+# done
 
 
 
