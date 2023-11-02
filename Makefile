@@ -59,3 +59,7 @@ clean:
 # Compile in debug mode
 debug:
 	make DEBUG=-DDEBUG
+
+custom:
+	gcc -fopenmp -lm -O3 'versions_2/parallel_all.c' -lm -O3 -o 'parallel_all.bin'
+	./parallel_all.bin -f test_files/test3

@@ -328,7 +328,7 @@ int main(int argc, char *argv[]) {
 
 		// PRAGMA 1
 
-		#pragma omp parallel for reduction(+:num_deactivated)
+		// #pragma omp parallel for reduction(+:num_deactivated)
 		for( i=0; i<num_focal; i++ ) {
 			if ( focal[i].start == iter ) {
 				focal[i].active = 1;
@@ -357,7 +357,7 @@ int main(int argc, char *argv[]) {
 
 			// PRAGMA 2
 
-			#pragma omp parallel for schedule(static)
+			// #pragma omp parallel for schedule(static)
 			for( i=1; i<rows-1; i++ )
 				for( j=1; j<columns-1; j++ )
 					accessMat( surfaceCopy, i, j ) = accessMat( surface, i, j );
@@ -366,7 +366,7 @@ int main(int argc, char *argv[]) {
 
 			// PRAGMA 3
 
-			#pragma omp parallel for schedule(static)
+			// #pragma omp parallel for schedule(static)
 			for( i=1; i<rows-1; i++ )
 				for( j=1; j<columns-1; j++ )
 					accessMat( surface, i, j ) = ( 
@@ -380,7 +380,7 @@ int main(int argc, char *argv[]) {
 
 			// PRAGMA 4
 
-			#pragma omp parallel for reduction(max : global_residual)
+			// #pragma omp parallel for reduction(max : global_residual)
 			for( i=1; i<rows-1; i++ )
 				for( j=1; j<columns-1; j++ ) 
 					if ( fabs( accessMat( surface, i, j ) - accessMat( surfaceCopy, i, j ) ) > global_residual ) {

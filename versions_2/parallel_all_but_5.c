@@ -392,7 +392,8 @@ int main(int argc, char *argv[]) {
 
 		/* 4.3. Move teams */
 		// bad paralelism way too slow
-		#pragma omp parallel for schedule(dynamic)
+		// pragma 5
+		// #pragma omp parallel for schedule(dynamic)
 		for( t=0; t<num_teams; t++ ) {
 			/* 4.3.1. Choose nearest focal point */
 			float distance = FLT_MAX;
