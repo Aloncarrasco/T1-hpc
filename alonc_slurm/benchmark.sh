@@ -22,34 +22,14 @@ function ends_with_c {
     fi
 }
 
-for file in versions_2/*; do
-  echo 'Starting with 16 cpus - no export OMP_NUM_THREADS'
-  if ends_with_c $file; then
-    file_bin=$file.bin
-    gcc -fopenmp -lm -O3 $file -lm -O3 -o $file_bin
 
-    echo FILE: $file
-    time $file_bin -f test_files/test2
-  fi
-done
- 
+echo '--------------------------- Test 4 --------------------------------'
 for file in versions_2/*; do
-  echo 'Test 2'
   if ends_with_c $file; then
     file_bin=$file.bin
     gcc -fopenmp -lm -O3 $file -lm -O3 -o $file_bin
     echo FILE: $file
-    time $file_bin -f test_files/test2
-  fi
-done
-
-for file in versions_2/*; do
-  echo 'Test 3'
-  if ends_with_c $file; then
-    file_bin=$file.bin
-    gcc -fopenmp -lm -O3 $file -lm -O3 -o $file_bin
-    echo FILE: $file
-    time $file_bin -f test_files/test3
+    time $file_bin -f test_files/test4
   fi
 done
 
