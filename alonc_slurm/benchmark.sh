@@ -8,8 +8,8 @@
 #SBATCH --mail-user=cristian.carrasco@uc.cl       # mail donde mandar las notifica$
 #SBATCH --workdir=/home/cristian.carrasco/T1-hpc         # direccion del d$
 #SBATCH --nodes 1                    # numero de nodos a usar
-#SBATCH --ntasks-per-node=16        # numero de trabajos (procesos) por nodo
-#SBATCH --cpus-per-task=1            # numero de cpus (threads) por trabajo (proceso)
+#SBATCH --ntasks-per-node=3        # numero de trabajos (procesos) por nodo
+#SBATCH --cpus-per-task=2            # numero de cpus (threads) por trabajo (proceso)
 
 echo 'Start'
 
