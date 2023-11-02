@@ -22,12 +22,12 @@ echo 'Compiling'
 gcc -fopenmp -lm -O3 '4_2_2_parallel.c' -lm -O3 -o '4_2_2_parallel.bin'
 
 #SBATCH --nodes 1                    # numero de nodos a usar
-#SBATCH --cpus-per-task=16           # numero de cpus (threads) por trabajo (proceso)
+#SBATCH --cpus-per-task=32           # numero de cpus (threads) por trabajo (proceso)
 
-export OMP_NUM_THREADS=16
+# export OMP_NUM_THREADS=16
 time ./4_2_2_parallel.bin -f test_files/test2
 
-export OMP_NUM_THREADS=32
+# export OMP_NUM_THREADS=32
 time ./4_2_2_parallel.bin -f test_files/test2
 
 
