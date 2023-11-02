@@ -356,7 +356,7 @@ int main(int argc, char *argv[]) {
 
 			// PRAGMA 2
 
-			#pragma omp parallel for schedule(static)
+			// #pragma omp parallel for schedule(static)
 			for( i=1; i<rows-1; i++ )
 				for( j=1; j<columns-1; j++ )
 					accessMat( surfaceCopy, i, j ) = accessMat( surface, i, j );
@@ -398,7 +398,7 @@ int main(int argc, char *argv[]) {
 
 			// PRAGMA 5
 
-			#pragma omp parallel for
+			// #pragma omp parallel for
 			for( j=0; j<num_focal; j++ ) {
 				if ( focal[j].active != 1 ) continue; // Skip non-active focal points
 				float dx = focal[j].x - teams[t].x;
