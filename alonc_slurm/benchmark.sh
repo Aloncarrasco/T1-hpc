@@ -32,7 +32,7 @@ for file in versions_2/*; do
     time $file_bin -f test_files/test2
   fi
 done
-
+ 
 for file in versions_2/*; do
   echo 'Test 2'
   if ends_with_c $file; then
