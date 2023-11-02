@@ -341,7 +341,6 @@ int main(int argc, char *argv[]) {
 		float global_residual = 0.0f;
 		int step;
 
-		// #pragma omp parallel for private(i,j,step) schedule(static)
 		for( step=0; step<10; step++ )	{
 			// print num threads
 			/* 4.2.1. Update heat on active focal points */
@@ -366,7 +365,7 @@ int main(int argc, char *argv[]) {
 
 			// PRAGMA 3
 
-			#pragma omp parallel for schedule(static)
+			// #pragma omp parallel for schedule(static)
 			for( i=1; i<rows-1; i++ )
 				for( j=1; j<columns-1; j++ )
 					accessMat( surface, i, j ) = ( 
@@ -380,7 +379,7 @@ int main(int argc, char *argv[]) {
 
 			// PRAGMA 4
 
-			#pragma omp parallel for reduction(max : global_residual)
+			// #pragma omp parallel for reduction(max : global_residual)
 			for( i=1; i<rows-1; i++ )
 				for( j=1; j<columns-1; j++ ) 
 					if ( fabs( accessMat( surface, i, j ) - accessMat( surfaceCopy, i, j ) ) > global_residual ) {

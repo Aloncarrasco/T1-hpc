@@ -20,13 +20,10 @@ echo 'Finished compiling'
 
 
 ./parallel_all.bin -f test_files/test1
-./extinguishing.bin -f test_files/test1
 
 ./parallel_all.bin -f test_files/test3
-./extinguishing.bin -f test_files/test3
 
 ./parallel_all.bin -f test_files/test4
-./extinguishing.bin -f test_files/test4
 
 
 
