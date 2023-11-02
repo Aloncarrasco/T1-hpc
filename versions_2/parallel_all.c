@@ -396,7 +396,7 @@ int main(int argc, char *argv[]) {
 			float distance = FLT_MAX;
 			int target = -1;
 
-			// PRAGMA 5
+			// PRAGMA 5 
 
 			// #pragma omp parallel for
 			for( j=0; j<num_focal; j++ ) {
