@@ -8,8 +8,8 @@
 #SBATCH --mail-user=cristian.carrasco@uc.cl       # mail donde mandar las notifica$
 #SBATCH --workdir=/home/cristian.carrasco/T1-hpc         # direccion del d$
 #SBATCH --nodes 1                    # numero de nodos a usar
-#SBATCH --ntasks-per-node=4        # numero de trabajos (procesos) por nodo
-#SBATCH --cpus-per-task=8            # numero de cpus (threads) por trabajo (proceso)
+#SBATCH --ntasks-per-node=16        # numero de trabajos (procesos) por nodo
+#SBATCH --cpus-per-task=1            # numero de cpus (threads) por trabajo (proceso)
 
 
 function ends_with_c {
@@ -33,10 +33,25 @@ time ./4_2_2_parallel.bin -f test_files/test4
 export OMP_NUM_THREADS=3
 time ./4_2_2_parallel.bin -f test_files/test4
 
- export OMP_NUM_THREADS=4
+export OMP_NUM_THREADS=4
 time ./4_2_2_parallel.bin -f test_files/test4
 
- export OMP_NUM_THREADS=5
+export OMP_NUM_THREADS=5
+time ./4_2_2_parallel.bin -f test_files/test4
+
+export OMP_NUM_THREADS=6
+time ./4_2_2_parallel.bin -f test_files/test4
+
+export OMP_NUM_THREADS=7
+time ./4_2_2_parallel.bin -f test_files/test4
+
+export OMP_NUM_THREADS=8
+time ./4_2_2_parallel.bin -f test_files/test4
+
+export OMP_NUM_THREADS=9
+time ./4_2_2_parallel.bin -f test_files/test4
+
+export OMP_NUM_THREADS=10
 time ./4_2_2_parallel.bin -f test_files/test4
 
 
