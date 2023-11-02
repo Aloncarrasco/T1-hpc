@@ -8,22 +8,50 @@
 #SBATCH --mail-user=cristian.carrasco@uc.cl       # mail donde mandar las notifica$
 #SBATCH --workdir=/home/cristian.carrasco/T1-hpc         # direccion del d$
 #SBATCH --nodes 1                    # numero de nodos a usar
-#SBATCH --ntasks-per-node=3        # numero de trabajos (procesos) por nodo
-#SBATCH --cpus-per-task=2            # numero de cpus (threads) por trabajo (proceso)
+#SBATCH --ntasks-per-node=4        # numero de trabajos (procesos) por nodo
+#SBATCH --cpus-per-task=4          # numero de cpus (threads) por trabajo (proceso)
 
 echo 'Start'
 
-gcc -fopenmp -lm -O3 'versions_2/parallel_all.c' -lm -O3 -o 'parallel_all.bin'
-gcc -lm -O3 'extinguishing.c' -lm -O3 -o 'extinguishing.bin'
+function ends_with_c {
+    file="$1"
+    if [ "${file##*.}" = "c" ]; then
+        return 0 # true
+    else
+        return 1 # false
+    fi
+}
 
-echo 'Finished compiling'
+for file in versions_2/*; do
+  echo 'Starting with 16 cpus - no export OMP_NUM_THREADS'
+  if ends_with_c $file; then
+    file_bin=$file.bin
+    gcc -fopenmp -lm -O3 $file -lm -O3 -o $file_bin
 
+    echo FILE: $file
+    time $file_bin -f test_files/test2
+  fi
+done
 
-./parallel_all.bin -f test_files/test1
+for file in versions_2/*; do
+  echo 'Test 2'
+  if ends_with_c $file; then
+    file_bin=$file.bin
+    gcc -fopenmp -lm -O3 $file -lm -O3 -o $file_bin
+    echo FILE: $file
+    time $file_bin -f test_files/test2
+  fi
+done
 
-./parallel_all.bin -f test_files/test3
-
-
+for file in versions_2/*; do
+  echo 'Test 3'
+  if ends_with_c $file; then
+    file_bin=$file.bin
+    gcc -fopenmp -lm -O3 $file -lm -O3 -o $file_bin
+    echo FILE: $file
+    time $file_bin -f test_files/test3
+  fi
+done
 
 
 
