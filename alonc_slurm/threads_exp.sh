@@ -31,6 +31,21 @@ time ./4_2_2_parallel.bin -f test_files/test3
 #SBATCH --cpus-per-task=3
 time ./4_2_2_parallel.bin -f test_files/test3
 
+#SBATCH --cpus-per-task=4
+time ./4_2_2_parallel.bin -f test_files/test3
+
+#SBATCH --cpus-per-task=5
+time ./4_2_2_parallel.bin -f test_files/test3
+
+#SBATCH --cpus-per-task=6
+time ./4_2_2_parallel.bin -f test_files/test3
+
+#SBATCH --cpus-per-task=7
+time ./4_2_2_parallel.bin -f test_files/test3
+ 
+#SBATCH --cpus-per-task=8
+time ./4_2_2_parallel.bin -f test_files/test3
+
 
 sleep 10
 echo "Finished with job $SLURM_JOBID"
