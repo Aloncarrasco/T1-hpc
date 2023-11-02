@@ -351,13 +351,13 @@ int main(int argc, char *argv[]) {
 			}
 
 			/* 4.2.2. Copy values of the surface in ancillary structure (Skip borders) */
-			#pragma omp parallel for schedule(static)
+			// #pragma omp parallel for schedule(static)
 			for( i=1; i<rows-1; i++ )
 				for( j=1; j<columns-1; j++ )
 					accessMat( surfaceCopy, i, j ) = accessMat( surface, i, j );
 
 			/* 4.2.3. Update surface values (skip borders) */
-			//#pragma omp parallel for schedule(static)
+			// #pragma omp parallel for schedule(static)
 			for( i=1; i<rows-1; i++ )
 				for( j=1; j<columns-1; j++ )
 					accessMat( surface, i, j ) = ( 
@@ -379,7 +379,7 @@ int main(int argc, char *argv[]) {
 		if( num_deactivated == num_focal && global_residual < THRESHOLD ) flag_stability = 1;
 
 		/* 4.3. Move teams */
-		//#pragma omp parallel for schedule(static)
+		#pragma omp parallel for schedule(static)
 		for( t=0; t<num_teams; t++ ) {
 			/* 4.3.1. Choose nearest focal point */
 			float distance = FLT_MAX;

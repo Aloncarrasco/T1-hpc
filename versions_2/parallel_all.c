@@ -324,7 +324,10 @@ int main(int argc, char *argv[]) {
 
 		/* 4.1. Activate focal points */
 		int num_deactivated = 0;
-		//#pragma omp parallel for reduction(+:num_deactivated) schedule(static)
+
+		// PRAGMA 1
+
+		#pragma omp parallel for reduction(+:num_deactivated)
 		for( i=0; i<num_focal; i++ ) {
 			if ( focal[i].start == iter ) {
 				focal[i].active = 1;
@@ -338,7 +341,7 @@ int main(int argc, char *argv[]) {
 		float global_residual = 0.0f;
 		int step;
 
-		#pragma omp parallel for private(i,j,step) schedule(static)
+		// #pragma omp parallel for private(i,j,step) schedule(static)
 		for( step=0; step<10; step++ )	{
 			// print num threads
 			/* 4.2.1. Update heat on active focal points */
@@ -351,12 +354,18 @@ int main(int argc, char *argv[]) {
 			}
 
 			/* 4.2.2. Copy values of the surface in ancillary structure (Skip borders) */
-			//#pragma omp parallel for schedule(static)
+
+			// PRAGMA 2
+
+			#pragma omp parallel for schedule(static)
 			for( i=1; i<rows-1; i++ )
 				for( j=1; j<columns-1; j++ )
 					accessMat( surfaceCopy, i, j ) = accessMat( surface, i, j );
 
 			/* 4.2.3. Update surface values (skip borders) */
+
+			// PRAGMA 3
+
 			#pragma omp parallel for schedule(static)
 			for( i=1; i<rows-1; i++ )
 				for( j=1; j<columns-1; j++ )
@@ -368,7 +377,10 @@ int main(int argc, char *argv[]) {
 
 			/* 4.2.4. Compute the maximum residual difference (absolute value) */
 			global_residual = 0.0f;
-			//#pragma omp parallel for reduction(max : global_residual)
+
+			// PRAGMA 4
+
+			#pragma omp parallel for reduction(max : global_residual)
 			for( i=1; i<rows-1; i++ )
 				for( j=1; j<columns-1; j++ ) 
 					if ( fabs( accessMat( surface, i, j ) - accessMat( surfaceCopy, i, j ) ) > global_residual ) {
@@ -384,6 +396,10 @@ int main(int argc, char *argv[]) {
 			/* 4.3.1. Choose nearest focal point */
 			float distance = FLT_MAX;
 			int target = -1;
+
+			// PRAGMA 5
+
+			#pragma omp parallel for
 			for( j=0; j<num_focal; j++ ) {
 				if ( focal[j].active != 1 ) continue; // Skip non-active focal points
 				float dx = focal[j].x - teams[t].x;
@@ -438,6 +454,10 @@ int main(int argc, char *argv[]) {
 			// Influence area of fixed radius depending on type
 			if ( teams[t].type == 1 ) radius = RADIUS_TYPE_1;
 			else radius = RADIUS_TYPE_2_3;
+
+			// PRAGMA 6
+
+			// No conviene paralelizar esto hay dependencias entre las iteraciones
 			for( i=teams[t].x-radius; i<=teams[t].x+radius; i++ ) {
 				for( j=teams[t].y-radius; j<=teams[t].y+radius; j++ ) {
 					if ( i<1 || i>=rows-1 || j<1 || j>=columns-1 ) continue; // Out of the heated surface
