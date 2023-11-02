@@ -26,7 +26,7 @@ echo 'test 3'
 gcc -fopenmp -lm -O3 $file -lm -O3 -o $file_bin
 
 echo 'no exports'
-srun $file_bin -f test_files/test3
+srun $file_bin -f test_files/test4
 
 
 sleep 5

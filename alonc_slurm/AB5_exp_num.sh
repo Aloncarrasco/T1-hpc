@@ -28,6 +28,16 @@ gcc -fopenmp -lm -O3 $file -lm -O3 -o $file_bin
 echo 'no exports'
 srun $file_bin -f test_files/test4
 
+for i in {1..16}; do
+  export OMP_NUM_THREADS=$i
+  echo 'export OMP_NUM_THREADS='$i
+  srun $file_bin -f test_files/test4
+done
+
+
+
+
+
 
 sleep 5
 echo "Finished with job $SLURM_JOBID"
