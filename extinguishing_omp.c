@@ -4,7 +4,7 @@
  * Computacion Paralela, Grado en Informatica (Universidad de Valladolid)
  * 2018/2019
  *
- * v1.4
+ * v1.4a
  *
  * Code prepared to be used with the Tablon on-line judge.
  * The current Parallel Computing course includes contests using:
@@ -18,6 +18,7 @@
 #include<math.h>
 #include<float.h>
 #include<sys/time.h>
+// #include<iostream>
 
 /* Headers for the OpenMP assignment versions */
 #include<omp.h>
@@ -40,6 +41,7 @@ double cp_Wtime(){
 #define RADIUS_TYPE_1		3
 #define RADIUS_TYPE_2_3		9
 #define THRESHOLD	0.1f
+#define CHUNK_SIZE 100
 
 /* Structure to store data of an extinguishing team */
 typedef struct {
@@ -127,6 +129,8 @@ void print_status( int iteration, int rows, int columns, float *surface, int num
  */
 int main(int argc, char *argv[]) {
 	int i,j,t;
+
+
 
 	// Simulation data
 	int rows, columns, max_iter;
@@ -301,12 +305,14 @@ int main(int argc, char *argv[]) {
  */
 
 	/* 3. Initialize surfaces */
+
 	surface = (float *)malloc( sizeof(float) * (size_t)rows * (size_t)columns );
 	surfaceCopy = (float *)malloc( sizeof(float) * (size_t)rows * (size_t)columns );
 	if ( surface == NULL || surfaceCopy == NULL ) {
 		fprintf(stderr,"-- Error allocating: surface structures\n");
 		exit( EXIT_FAILURE );
 	}
+	#pragma omp parallel for
 	for( i=0; i<rows; i++ )
 		for( j=0; j<columns; j++ ) {
 			accessMat( surface, i, j ) = 0.0;
@@ -321,6 +327,10 @@ int main(int argc, char *argv[]) {
 
 		/* 4.1. Activate focal points */
 		int num_deactivated = 0;
+
+		// PRAGMA 1
+
+		#pragma omp parallel for reduction(+:num_deactivated)
 		for( i=0; i<num_focal; i++ ) {
 			if ( focal[i].start == iter ) {
 				focal[i].active = 1;
@@ -334,8 +344,8 @@ int main(int argc, char *argv[]) {
 		float global_residual = 0.0f;
 		int step;
 
-		// #pragma omp parallel for private(i,j,step) reduction(max:global_residual) schedule(static)
 		for( step=0; step<10; step++ )	{
+			// print num threads
 			/* 4.2.1. Update heat on active focal points */
 			for( i=0; i<num_focal; i++ ) {
 				if ( focal[i].active != 1 ) continue;
@@ -346,11 +356,19 @@ int main(int argc, char *argv[]) {
 			}
 
 			/* 4.2.2. Copy values of the surface in ancillary structure (Skip borders) */
+
+			// PRAGMA 2
+
+			#pragma omp parallel for schedule(static)
 			for( i=1; i<rows-1; i++ )
 				for( j=1; j<columns-1; j++ )
 					accessMat( surfaceCopy, i, j ) = accessMat( surface, i, j );
 
 			/* 4.2.3. Update surface values (skip borders) */
+
+			// PRAGMA 3
+
+			#pragma omp parallel for schedule(static)
 			for( i=1; i<rows-1; i++ )
 				for( j=1; j<columns-1; j++ )
 					accessMat( surface, i, j ) = ( 
@@ -361,6 +379,10 @@ int main(int argc, char *argv[]) {
 
 			/* 4.2.4. Compute the maximum residual difference (absolute value) */
 			global_residual = 0.0f;
+
+			// PRAGMA 4
+
+			#pragma omp parallel for reduction(max : global_residual)
 			for( i=1; i<rows-1; i++ )
 				for( j=1; j<columns-1; j++ ) 
 					if ( fabs( accessMat( surface, i, j ) - accessMat( surfaceCopy, i, j ) ) > global_residual ) {
@@ -371,15 +393,23 @@ int main(int argc, char *argv[]) {
 		if( num_deactivated == num_focal && global_residual < THRESHOLD ) flag_stability = 1;
 
 		/* 4.3. Move teams */
+		// bad paralelism way too slow
+		// pragma 5
+		// #pragma omp parallel for schedule(dynamic)
 		for( t=0; t<num_teams; t++ ) {
 			/* 4.3.1. Choose nearest focal point */
 			float distance = FLT_MAX;
 			int target = -1;
+
+			// PRAGMA 5 
+
+			// #pragma omp parallel for
 			for( j=0; j<num_focal; j++ ) {
 				if ( focal[j].active != 1 ) continue; // Skip non-active focal points
 				float dx = focal[j].x - teams[t].x;
 				float dy = focal[j].y - teams[t].y;
 				float local_distance = sqrtf( dx*dx + dy*dy );
+				// #pragma omp criticals
 				if ( local_distance < distance ) {
 					distance = local_distance;
 					target = j;
@@ -416,6 +446,7 @@ int main(int argc, char *argv[]) {
 		}
 
 		/* 4.4. Team actions */
+		
 		for( t=0; t<num_teams; t++ ) {
 			/* 4.4.1. Deactivate the target focal point when it is reached */
 			int target = teams[t].target;
@@ -428,8 +459,17 @@ int main(int argc, char *argv[]) {
 			// Influence area of fixed radius depending on type
 			if ( teams[t].type == 1 ) radius = RADIUS_TYPE_1;
 			else radius = RADIUS_TYPE_2_3;
+
+			// PRAGMA 6
+
+			// No conviene paralelizar esto hay dependencias entre las iteraciones
+			// 
+			// #pragma omp parallel for schedule(static)
 			for( i=teams[t].x-radius; i<=teams[t].x+radius; i++ ) {
 				for( j=teams[t].y-radius; j<=teams[t].y+radius; j++ ) {
+
+					// cout<<"threads="<<omp_get_num_threads()<<endl;
+					// printf("threads=%d, ", omp_get_num_threads());
 					if ( i<1 || i>=rows-1 || j<1 || j>=columns-1 ) continue; // Out of the heated surface
 					float dx = teams[t].x - i;
 					float dy = teams[t].y - j;

@@ -13,7 +13,7 @@
 
 echo '--------------------------- Tarea 1 executions --------------------------------'
 
-file='versions_2/parallel_all_but_5.c'
+file='extinguishing_omp.c'
 file_bin=$file.bin
 
 gcc -fopenmp -lm -O3 $file -lm -O3 -o $file_bin
@@ -36,4 +36,3 @@ done
 
 
 sleep 5
-echo "Finished with job $SLURM_JOBID"
