@@ -8,26 +8,21 @@
 #SBATCH --mail-user=cristian.carrasco@uc.cl       # mail donde mandar las notifica$
 #SBATCH --workdir=/home/cristian.carrasco/T1-hpc         # direccion del d$
 #SBATCH --nodes 1                    # numero de nodos a usar
-#SBATCH --ntasks-per-node=2        # numero de trabajos (procesos) por nodo
+#SBATCH --ntasks-per-node=1        # numero de trabajos (procesos) por nodo
 #SBATCH --cpus-per-task=16          # numero de cpus (threads) por trabajo (proceso)
 
 echo '--------------------------- Test 4 --------------------------------'
-echo '1 tasks'
-echo '16 cpu'
-echo ''
 
 file='versions_2/parallel_all_but_5.c'
 file_bin=$file.bin
-
 
 gcc -fopenmp -lm -O3 $file -lm -O3 -o $file_bin
 
 echo 'no exports'
 
-srun $file_bin -f test_files/test4
-srun $file_bin -f test_files/test3
-
-
+srun -n 1 -c 3 $file_bin -f test_files/test4 --nodelist="hydra"
+srun -n 1 -c 6 $file_bin -f test_files/test4 --nodelist="hydra"
+# srun $file_bin -f test_files/test3
 
 
 sleep 5
