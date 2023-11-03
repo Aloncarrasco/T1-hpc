@@ -24,6 +24,8 @@ function ends_with_c {
 echo 'Compiling'
 gcc -fopenmp -lm -O3 '4_2_2_parallel.c' -lm -O3 -o '4_2_2_parallel.bin'
 
+for i in {1..16}
+
 export OMP_NUM_THREADS=1
 time ./4_2_2_parallel.bin -f test_files/test4
 

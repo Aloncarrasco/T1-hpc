@@ -18,7 +18,9 @@ file_bin=$file.bin
 
 gcc -fopenmp -lm -O3 $file -lm -O3 -o $file_bin
 
-echo 'no exports'
+for i in {1..16}; do
+  echo $i
+done
 
 export OMP_NUM_THREADS=1
 srun -n 1 -c 1 $file_bin -f test_files/test4 --nodelist="hydra"
