@@ -11,32 +11,19 @@
 #SBATCH --ntasks-per-node=1        # numero de trabajos (procesos) por nodo
 #SBATCH --cpus-per-task=16          # numero de cpus (threads) por trabajo (proceso)
 
-echo '--------------------------- Test 4 --------------------------------'
+echo '--------------------------- Tarea 1 executions --------------------------------'
 
 file='versions_2/parallel_all_but_5.c'
 file_bin=$file.bin
 
 gcc -fopenmp -lm -O3 $file -lm -O3 -o $file_bin
 
-for i in {1..16}; do
-  echo $i
+for i in {1..5}; do
+  echo ''
+  echo 'total threads: '$i
+  export OMP_NUM_THREADS=$i
+  srun -n 1 -c $i $file_bin -f test_files/test3 --nodelist="hydra"
 done
-
-export OMP_NUM_THREADS=1
-srun -n 1 -c 1 $file_bin -f test_files/test4 --nodelist="hydra"
-
-export OMP_NUM_THREADS=2
-srun -n 1 -c 2 $file_bin -f test_files/test4 --nodelist="hydra"
-
-export OMP_NUM_THREADS=3
-srun -n 1 -c 3 $file_bin -f test_files/test4 --nodelist="hydra"
-
-export OMP_NUM_THREADS=4
-srun -n 1 -c 4 $file_bin -f test_files/test4 --nodelist="hydra"
-
-export OMP_NUM_THREADS=5
-srun -n 1 -c 5 $file_bin -f test_files/test4 --nodelist="hydra"
-# srun $file_bin -f test_files/test3
 
 
 sleep 5

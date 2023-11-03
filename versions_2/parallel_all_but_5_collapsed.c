@@ -312,7 +312,7 @@ int main(int argc, char *argv[]) {
 		fprintf(stderr,"-- Error allocating: surface structures\n");
 		exit( EXIT_FAILURE );
 	}
-	#pragma omp parallel for
+	#pragma omp parallel for collapse(2)
 	for( i=0; i<rows; i++ )
 		for( j=0; j<columns; j++ ) {
 			accessMat( surface, i, j ) = 0.0;
@@ -359,7 +359,7 @@ int main(int argc, char *argv[]) {
 
 			// PRAGMA 2
 
-			#pragma omp parallel for schedule(static)
+			#pragma omp parallel for collapse(2) schedule(static)
 			for( i=1; i<rows-1; i++ )
 				for( j=1; j<columns-1; j++ )
 					accessMat( surfaceCopy, i, j ) = accessMat( surface, i, j );
@@ -368,7 +368,7 @@ int main(int argc, char *argv[]) {
 
 			// PRAGMA 3
 
-			#pragma omp parallel for schedule(static)
+			#pragma omp parallel for collapse(2) schedule(static)
 			for( i=1; i<rows-1; i++ )
 				for( j=1; j<columns-1; j++ )
 					accessMat( surface, i, j ) = ( 
@@ -382,7 +382,7 @@ int main(int argc, char *argv[]) {
 
 			// PRAGMA 4
 
-			#pragma omp parallel for reduction(max : global_residual)
+			#pragma omp parallel for collapse(2) reduction(max : global_residual)
 			for( i=1; i<rows-1; i++ )
 				for( j=1; j<columns-1; j++ ) 
 					if ( fabs( accessMat( surface, i, j ) - accessMat( surfaceCopy, i, j ) ) > global_residual ) {
