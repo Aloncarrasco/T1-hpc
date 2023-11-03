@@ -36,3 +36,4 @@ done
 
 
 sleep 5
+echo "Finished with job $SLURM_JOBID"
