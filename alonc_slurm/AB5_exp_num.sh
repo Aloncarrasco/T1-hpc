@@ -21,19 +21,19 @@ gcc -fopenmp -lm -O3 $file -lm -O3 -o $file_bin
 echo 'no exports'
 
 export OMP_NUM_THREADS=1
-srun -n 1 $file_bin -f test_files/test4 --nodelist="hydra"
+srun -n 1 -c 1 $file_bin -f test_files/test4 --nodelist="hydra"
 
 export OMP_NUM_THREADS=2
-srun -n 1 $file_bin -f test_files/test4 --nodelist="hydra"
+srun -n 1 -c 2 $file_bin -f test_files/test4 --nodelist="hydra"
 
 export OMP_NUM_THREADS=3
-srun -n 1 $file_bin -f test_files/test4 --nodelist="hydra"
+srun -n 1 -c 3 $file_bin -f test_files/test4 --nodelist="hydra"
 
 export OMP_NUM_THREADS=4
-srun -n 1 $file_bin -f test_files/test4 --nodelist="hydra"
+srun -n 1 -c 4 $file_bin -f test_files/test4 --nodelist="hydra"
 
 export OMP_NUM_THREADS=5
-srun -n 1 $file_bin -f test_files/test4 --nodelist="hydra"
+srun -n 1 -c 5 $file_bin -f test_files/test4 --nodelist="hydra"
 # srun $file_bin -f test_files/test3
 
 

@@ -305,8 +305,10 @@ int main(int argc, char *argv[]) {
  */
 
 	/* 3. Initialize surfaces */
+	int num_threads = 3;
+	omp_set_num_threads(num_threads);
 
-	#pragma omp parallel for schedule(static)
+	#pragma omp parallel for schedule(static) 
 	for(int i = 0; i < 100; i+=1) {
 		if (i == 0) printf("num threads=%d\n", omp_get_num_threads());
 		// printf("thread %d, i=%d\n", omp_get_thread_num(), i);
