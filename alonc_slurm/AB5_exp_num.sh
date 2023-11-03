@@ -9,7 +9,7 @@
 #SBATCH --workdir=/home/cristian.carrasco/IIC3533-T1         # direccion del d$
 #SBATCH --nodes 1                    # numero de nodos a usar
 #SBATCH --ntasks-per-node=1        # numero de trabajos (procesos) por nodo
-#SBATCH --cpus-per-task=16          # numero de cpus (threads) por trabajo (proceso)
+#SBATCH --cpus-per-task=32          # numero de cpus (threads) por trabajo (proceso)
 
 echo '--------------------------- Tarea 1 executions --------------------------------'
 
