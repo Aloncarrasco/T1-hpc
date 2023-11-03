@@ -18,7 +18,16 @@ file_bin=$file.bin
 
 gcc -fopenmp -lm -O3 $file -lm -O3 -o $file_bin
 
-for i in {1..5}; do
+
+
+for i in {1..3..1}; do
+  echo ''
+  echo 'total threads: '$i
+  export OMP_NUM_THREADS=$i
+  srun -n 1 -c $i $file_bin -f test_files/test3 --nodelist="hydra"
+done
+
+for i in {4..32..4}; do
   echo ''
   echo 'total threads: '$i
   export OMP_NUM_THREADS=$i
